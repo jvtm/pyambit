@@ -49,11 +49,43 @@ def parse_temperature(text):
     celsius = float(text) - 273.15
     return round(celsius, 1)
 
+# Very temp. only single track segment.
+GPX_TEMP_HDR = \
+'''<?xml version="1.0" encoding="UTF-8" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     version="1.1"
+     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<trk>
+<trkseg>
+'''
+
+GPX_TEMP_FTR = '''
+</trkseg>
+</trk>
+</gpx>
+'''
+
+
+TRKPT_TEMPLATE = \
+'''<trkpt lat="{Latitude}" lon="{Longitude}">
+  <ele>{GPSAltitude}</ele>
+  <time>{UTC}</time>
+  <extensions>
+    <gpxtpx:TrackPointExtension>
+      <gpxtpx:hr>{HR}</gpxtpx:hr>
+    </gpxtpx:TrackPointExtension>
+  </extensions>
+</trkpt>
+'''
+
 # XXX: if outputting strings anyway, there's no need to parse floats...
 PARSERS = {
     # on both sample entry types
     'Time': parse_time,     # time from start. need to check how pausing affects this...
-    'UTC': parse_utc,       # it actually would work as GPX <time> directly
+    #'UTC': parse_utc,       # it actually would work as GPX <time> directly
+    'UTC': str,
 
     # GPS sample entry
     'Latitude': parse_rad,
@@ -100,5 +132,9 @@ def parse_ambit_samples(file_obj):
 
 if __name__ == '__main__':
     with open(sys.argv[1], 'rb') as fob:
-        for item in parse_ambit_samples(fix_ambit_data(fob)):
-            print item
+        samples = list(parse_ambit_samples(fix_ambit_data(fob)))
+
+    sys.stdout.write(GPX_TEMP_HDR)
+    for sample in samples:
+        sys.stdout.write(TRKPT_TEMPLATE.format(**sample))
+    sys.stdout.write(GPX_TEMP_FTR)
