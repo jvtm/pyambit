@@ -30,6 +30,10 @@ Plans / TODO
 * figure out what the occasional `IBI` section contains
 * nice enough interface / class for non-GPX use cases
 * test files in this repo (my regular files are maybe too big, 2-4MB)
+* Python packaging (setup.py)
+* Debian packaging (debian/)
+* Windows usage instructions?
+
 
 Test data
 =========
