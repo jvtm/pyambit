@@ -10,7 +10,7 @@ Suunto Ambit XML files
 Can be found on:
 
 * Windows: `%HOMEPATH%\AppData\Roaming\Suunto\MovesLink2\`
-* Mac OS X: `?`
+* Mac OS X: `/Users/YOUR_USERNAME/Library/Application Support/Suunto/Moveslink2/`
 
 Technically, these files are not XML, as they have multiple root elements.
 As a workaround this library internally first injects a dummy root element
