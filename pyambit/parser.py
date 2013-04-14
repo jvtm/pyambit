@@ -90,9 +90,9 @@ PARSERS = {
     # GPS sample entry
     'Latitude': parse_rad,
     'Longitude': parse_rad,
-    'GPSAltitude': int,     # TODO: compare against baro
+    'GPSAltitude': float,     # TODO: compare against baro
     'GPSHeading': float,    # convert?
-    'EHPE': int,   # TODO: find out what igotu2gpx outputs
+    'EHPE': float,   # TODO: find out what igotu2gpx outputs
 
     # Suunto sample entry
     'VerticalSpeed': float,             # m/s
@@ -135,6 +135,15 @@ if __name__ == '__main__':
         samples = list(parse_ambit_samples(fix_ambit_data(fob)))
 
     sys.stdout.write(GPX_TEMP_HDR)
+    # with my latest workouts (2013/03 and onwards) some samples are missing GPSAltitude
+    # some modifications to this script/lib will follow "soon" to make this a little
+    # bit prettier...
+    althack = 0
     for sample in samples:
+        if 'GPSAltitude' not in sample:
+            sample['GPSAltitude'] = althack
+        else:
+            althack = sample['GPSAltitude']
         sys.stdout.write(TRKPT_TEMPLATE.format(**sample))
     sys.stdout.write(GPX_TEMP_FTR)
+
