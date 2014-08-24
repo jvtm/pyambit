@@ -99,7 +99,7 @@ PARSERS = {
     'HR': parse_hr,
     'EnergyConsumption': float,         # float, but what...
     'Temperature': parse_temperature,   # kelvins? really? :)
-    'SeaLevelPressure': int,            # ???
+    'SeaLevelPressure': float,          # ???
     'Altitude': int,                    # XXX: from baro?
     'Distance': int,
     'Speed': float,                     # m/s
