@@ -114,10 +114,21 @@ PARSERS = {
 
 
 def fix_ambit_data(file_obj):
+    # <xml> line
     data = file_obj.readline()
-    data += "<root>"
-    data += file_obj.read()
-    data += "</root>\n"
+    tmp = file_obj.readline()
+    if tmp.startswith("<sml"):
+        # with moveslink 1.2.8+ we have "sml" files
+        # Not using the full line, as namespaced elements are not fun (see http://bugs.python.org/issue18304)
+        # samples are actually in sml -> DeviceLog -> Samples
+        data += "<sml>\n"
+        data += file_obj.read()
+    else:
+        # old log-*.xml, missing top level element
+        data += "<root>"
+        data += tmp
+        data += file_obj.read()
+        data += "</root>"
     return StringIO(data)
 
 
@@ -125,7 +136,12 @@ def parse_ambit_samples(file_obj):
     # ambit data is not valid xml. need to add a fake top level entry.
     tree = ET.parse(file_obj)
     item = {}
-    for sample in tree.find('samples'):
+    # very old format (not sure if it still works...)
+    samples = tree.find('samples')
+    # either SML (having DeviceLog -> Samples) or a bit older (just Samples)
+    if samples is None:
+        samples = tree.find('.//Samples')
+    for sample in samples:
         is_gps_sample = (sample.find('Latitude') is not None)
         for child in sample:
             parser = PARSERS.get(child.tag)

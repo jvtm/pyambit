@@ -16,11 +16,13 @@ Technically, these files are not XML, as they have multiple root elements.
 As a workaround this library internally first injects a dummy root element
 to the XML document (in memory).
 
+_Update:_ as of Moveslink2 v1.2.8 the application now stores files like `26FBXXXXXXXXXXXX-2014-08-24T15_01_49-0.sml`.
+These are actually valid XML, and now somewhat supported by this library (not fully confirmed yet).
+
 
 Plans / TODO
 ============
 
-* _Support new Moveslink2 1.2.8+ data format (.sml files)_
 * output to GPX (kinda done, not validated yet)
 * test with different settings, recording intervals, sports etc
 * check that output works nicely with QuickRoute (incl. HR etc)
