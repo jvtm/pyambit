@@ -20,6 +20,7 @@ to the XML document (in memory).
 Plans / TODO
 ============
 
+* _Support new Moveslink2 1.2.8+ data format (.sml files)_
 * output to GPX (kinda done, not validated yet)
 * test with different settings, recording intervals, sports etc
 * check that output works nicely with QuickRoute (incl. HR etc)
