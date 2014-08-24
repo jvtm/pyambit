@@ -79,6 +79,13 @@ TRKPT_TEMPLATE = \
   </extensions>
 </trkpt>
 '''
+TRKPT_TEMPLATE_NO_HR = \
+'''<trkpt lat="{Latitude}" lon="{Longitude}">
+  <ele>{GPSAltitude}</ele>
+  <time>{UTC}</time>
+</trkpt>
+'''
+
 
 # XXX: if outputting strings anyway, there's no need to parse floats...
 PARSERS = {
@@ -144,6 +151,9 @@ if __name__ == '__main__':
             sample['GPSAltitude'] = althack
         else:
             althack = sample['GPSAltitude']
-        sys.stdout.write(TRKPT_TEMPLATE.format(**sample))
+	if 'HR' in sample:
+            sys.stdout.write(TRKPT_TEMPLATE.format(**sample))
+        else:
+            sys.stdout.write(TRKPT_TEMPLATE_NO_HR.format(**sample))
     sys.stdout.write(GPX_TEMP_FTR)
 
